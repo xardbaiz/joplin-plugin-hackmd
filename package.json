@@ -9,7 +9,7 @@
   "license": "MIT",
   "keywords": [
     "joplin-plugin",
-	"hackmd"
+    "hackmd"
   ],
   "devDependencies": {
     "@types/node": "^14.0.14",
