@@ -20,26 +20,38 @@ joplin.plugins.register({
 			execute: async () => {
 				const note = await joplin.workspace.selectedNote();
 				if (!note) {
-					console.log("Note isn't selected");
+					console.warn("Note isn't selected");
 					return;
 				}
 
-				console.info('Note is:', note);
+				console.debug('[HackMD] Selected note object is:', note);
+				let noteBody = note.body;
 
 				if (!hmdApiClient) {
+					console.debug("[HackMD] Creating new web-client");
 					let loadedHmdConfig = HackMDConfig;
-					console.info('Hack MD Config is:', loadedHmdConfig);
 					hmdApiClient = new HmdAPI(loadedHmdConfig);
 				}
 				let isLogin = await hmdApiClient.isLogin();
 				if (!isLogin) {
-					let username = await Settings.getUsername();
-					let password = await Settings.getPassword();
+					console.debug("[HackMD] Checking data for sign in...");
+					let username:string = await Settings.getUsername();
+					let password:string = await Settings.getPassword();
+					console.log(`${username},${password}`);
+					if (!username || !password ) {
+						joplin.views.dialogs.showMessageBox("HackMD username or password is empty! Check HackMD settings")
+						return;
+					}
+					console.debug("[HackMD] Signing in...");
 					await hmdApiClient.login(username, password);
 				}
 
-				let me = await hmdApiClient.getMe();
-				console.log("HackMD Profile info", me);
+				console.debug("[HackMD] Creating note...");
+				let url = await hmdApiClient.newNote(noteBody);
+
+				console.log("[HackMD] New note url:", url);
+				await joplin.data.put(['notes', note.id], null, { body: `${noteBody} \n\n ----- \n HackMD Note URL: ${url}` });
+				
 			},
 		});
 		
@@ -65,6 +77,13 @@ joplin.plugins.register({
 		// as you also want to update the TOC in this case.
 		await joplin.workspace.onNoteChange(() => {
 			updateTocView();
+		});
+
+		await joplin.settings.onChange(() => {
+			if (hmdApiClient) {
+				console.debug("HackMD settings changed... logged out");
+				hmdApiClient.logout();
+			}
 		});
 
 		// Also update the TOC when the plugin starts

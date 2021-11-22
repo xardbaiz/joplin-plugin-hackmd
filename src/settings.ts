@@ -1,23 +1,26 @@
 import joplin from 'api';
-import { SettingSection, SettingItem, SettingItemType } from 'api/types';
+import { SettingStorage, SettingItem, SettingItemType } from 'api/types';
 
 export default class Settings {
-    private static sectionName = "HackMD";
+    public static readonly usernameField = "username";
+    public static readonly passwordField = "password";
+    private static readonly sectionName = "HackMD";
 
     private static settingsItems: Record<string, SettingItem> = {
-        "eu.xardbaiz.HackMD.settings.username": {
+        [Settings.usernameField]: {
             type: SettingItemType.String,
             label: "HackMD email",
             value: "",
             public: true,
             section: Settings.sectionName
         },
-        "eu.xardbaiz.HackMD.settings.password": {
+        [Settings.passwordField]: {
             type: SettingItemType.String,
             label: "HackMD password",
             value: "",
             public: true,
             secure: true,
+            storage: SettingStorage.Database,
             section: Settings.sectionName
         }
     };
@@ -40,10 +43,10 @@ export default class Settings {
         console.log("Settings registered");
     }
 
-    public static async getUsername() {
-        return await joplin.settings.value("eu.xardbaiz.HackMD.settings.username");
+    public static async getUsername () {
+        return await joplin.settings.value(Settings.usernameField);
     }
     public static async getPassword() {
-        return await joplin.settings.value("eu.xardbaiz.HackMD.settings.password");
+        return await joplin.settings.value(Settings.passwordField);
     }
 }
