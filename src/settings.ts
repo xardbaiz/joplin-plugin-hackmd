@@ -8,7 +8,7 @@ export default class Settings {
         "eu.xardbaiz.HackMD.settings.username": {
             type: SettingItemType.String,
             label: "HackMD email",
-            value: "somebody@somewhere.org",
+            value: "",
             public: true,
             section: Settings.sectionName
         },
@@ -26,6 +26,7 @@ export default class Settings {
         await Settings.registerSection();
         await Settings.registerSettings();
     }
+    
     private static async registerSection() {
         await joplin.settings.registerSection("HackMD", {
             label: "HackMD sync",
@@ -37,5 +38,12 @@ export default class Settings {
     private static async registerSettings() {
         await joplin.settings.registerSettings(Settings.settingsItems);
         console.log("Settings registered");
+    }
+
+    public static async getUsername() {
+        return await joplin.settings.value("eu.xardbaiz.HackMD.settings.username");
+    }
+    public static async getPassword() {
+        return await joplin.settings.value("eu.xardbaiz.HackMD.settings.password");
     }
 }
