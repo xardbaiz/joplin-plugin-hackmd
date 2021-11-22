@@ -2,10 +2,10 @@ import joplin from 'api';
 import { ToolbarButtonLocation } from 'api/types';
 import Settings from "./settings";
 
-import HmdAPI from '@hackmd/api'
+import HmdAPI from '@hackmd/api' 
 import HackMDConfig from "./hackmd/config";
 
-let hmdApiClient;
+let hmdApiClient:HmdAPI ;
 
 joplin.plugins.register({
 
@@ -31,13 +31,15 @@ joplin.plugins.register({
 					console.info('Hack MD Config is:', loadedHmdConfig);
 					hmdApiClient = new HmdAPI(loadedHmdConfig);
 				}
-				if (!hmdApiClient.isLogin()) {
+				let isLogin = await hmdApiClient.isLogin();
+				if (!isLogin) {
 					let username = await Settings.getUsername();
 					let password = await Settings.getPassword();
 					await hmdApiClient.login(username, password);
 				}
 
-				console.log("HackMD Profile info", await hmdApiClient.getMe());
+				let me = await hmdApiClient.getMe();
+				console.log("HackMD Profile info", me);
 			},
 		});
 		
