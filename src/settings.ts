@@ -27,7 +27,7 @@ export default class Settings {
 
     static async init() {
         await Settings.registerSection();
-        await Settings.registerSettings();
+        Settings.registerSettings();
     }
     
     private static async registerSection() {
@@ -35,12 +35,12 @@ export default class Settings {
             label: "HackMD sync",
             name: Settings.sectionName
         });
-        console.log("Section registered");
+        console.debug("Settings section registered");
     }
 
     private static async registerSettings() {
         await joplin.settings.registerSettings(Settings.settingsItems);
-        console.log("Settings registered");
+        console.debug("Settings registered");
     }
 
     public static async getUsername () {

@@ -5,6 +5,8 @@ import Settings from "./settings";
 import HmdAPI from '@hackmd/api' 
 import HackMDConfig from "./hackmd/config";
 
+const hmdMarkPrefix = "HackMD Note URL";
+
 let hmdApiClient:HmdAPI ;
 
 joplin.plugins.register({
@@ -24,14 +26,21 @@ joplin.plugins.register({
 					return;
 				}
 
+				if (note.body.includes(hmdMarkPrefix)) {
+					joplin.views.dialogs.showMessageBox("Note already shared on HackMD, check footer part of your note for HackMD link,"
+					+ " or remove that part to share on HackMD again."
+					+ " Note updating is expected in the next version of the plugin");
+					return;
+				}
+
 				console.debug('[HackMD] Selected note object is:', note);
-				let noteBody = note.body;
 
 				if (!hmdApiClient) {
 					console.debug("[HackMD] Creating new web-client");
 					let loadedHmdConfig = HackMDConfig;
 					hmdApiClient = new HmdAPI(loadedHmdConfig);
 				}
+				
 				let isLogin = await hmdApiClient.isLogin();
 				if (!isLogin) {
 					console.debug("[HackMD] Checking data for sign in...");
@@ -47,37 +56,18 @@ joplin.plugins.register({
 				}
 
 				console.debug("[HackMD] Creating note...");
-				let url = await hmdApiClient.newNote(noteBody);
+				let url = await hmdApiClient.newNote(note.body);
 
 				console.log("[HackMD] New note url:", url);
-				await joplin.data.put(['notes', note.id], null, { body: `${noteBody} \n\n ----- \n HackMD Note URL: ${url}` });
-				
+
+				let newBody  = `${note.body} \n\n ----- \n ${hmdMarkPrefix}: ${url}`;
+				await joplin.data.put(['notes', note.id], null, { body: newBody});
+				await joplin.commands.execute('editor.setText', newBody);
+				await joplin.commands.execute('focusElement', 'noteBody');
 			},
 		});
-		
+
 		joplin.views.toolbarButtons.create('share', `share`, ToolbarButtonLocation.EditorToolbar);
-
-		// Later, this is where you'll want to update the TOC
-		async function updateTocView() {
-			// Get the current note from the workspace.
-			/*const note = await joplin.workspace.selectedNote();
-
-			// Keep in mind that it can be `null` if nothing is currently selected!
-			if (note) {
-				console.info('Note content has changed! New note is:', note);
-			}*/
-		}
-
-		// This event will be triggered when the user selects a different note
-		await joplin.workspace.onNoteSelectionChange(() => {
-			updateTocView();
-		});
-
-		// This event will be triggered when the content of the note changes
-		// as you also want to update the TOC in this case.
-		await joplin.workspace.onNoteChange(() => {
-			updateTocView();
-		});
 
 		await joplin.settings.onChange(() => {
 			if (hmdApiClient) {
@@ -85,9 +75,6 @@ joplin.plugins.register({
 				hmdApiClient.logout();
 			}
 		});
-
-		// Also update the TOC when the plugin starts
-		updateTocView();
 	},
 
 });
