@@ -3,9 +3,10 @@ import { ToolbarButtonLocation } from 'api/types';
 import Settings from "./settings";
 
 import HmdAPI from '@hackmd/api' 
-import HackMDConfig from "./hackmd/config";
+import loadedHmdConfig from "./hackmd/config";
 
 const hmdMarkPrefix = "HackMD Note URL";
+const shareButton = "share"
 
 let hmdApiClient:HmdAPI ;
 
@@ -16,9 +17,9 @@ joplin.plugins.register({
 		Settings.init();
 
 		joplin.commands.register({
-			name: 'share',
+			name: shareButton,
 			label: 'Share on HackMD',
-			iconName: 'fas fa-music',
+			iconName: 'fa fa-share-alt',
 			execute: async () => {
 				const note = await joplin.workspace.selectedNote();
 				if (!note) {
@@ -37,7 +38,6 @@ joplin.plugins.register({
 
 				if (!hmdApiClient) {
 					console.debug("[HackMD] Creating new web-client");
-					let loadedHmdConfig = HackMDConfig;
 					hmdApiClient = new HmdAPI(loadedHmdConfig);
 				}
 				
@@ -67,7 +67,7 @@ joplin.plugins.register({
 			},
 		});
 
-		joplin.views.toolbarButtons.create('share', `share`, ToolbarButtonLocation.EditorToolbar);
+		joplin.views.toolbarButtons.create(shareButton, shareButton, ToolbarButtonLocation.EditorToolbar);
 
 		await joplin.settings.onChange(() => {
 			if (hmdApiClient) {

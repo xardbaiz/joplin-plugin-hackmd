@@ -5,7 +5,6 @@ const fs = joplin.require('fs-extra');
 import {homedir} from 'os'
 import * as path from 'path'
 
-import Settings from "../settings";
 const defaultCookiePath = path.join(homedir(), '.hackmd', 'cookies.json')
 
 const cookieDirPath = path.dirname(defaultCookiePath)
@@ -62,6 +61,4 @@ export default {
     cookiePath: defaultCookiePath,
     serverUrl: 'https://hackmd.io',
     enterprise: true,
-    /*loginID: Settings.getUsername,
-    loginPassword:  Settings.getPassword*/
 }
