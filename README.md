@@ -1,24 +1,74 @@
-# Joplin Plugin
+# Joplin -> HackMD
 
-This is a template to create a new Joplin plugin.
+HackMD Joplin Plugin is an *unofficial* plugin to extend the export tools of [Joplin's](https://joplinapp.org/) desktop application.
 
-The main two files you will want to look at are:
+It allows sharing notes online on the HackMD website
 
-- `/src/index.ts`, which contains the entry point for the plugin source code.
-- `/src/manifest.json`, which is the plugin manifest. It contains information such as the plugin a name, version, etc.
+## Features
 
-## Building the plugin
+- Saves HackMD user credentials in secured store
+- Uploads note online using HackMD website (one-way share: Joplin :arrow_right: HackMD)
+	>  - Content: {temporary} text only _(see 'Roardmap')_
+	>  - Access for a new note by default: read - everyone; write - owner only;
 
-The plugin is built using Webpack, which creates the compiled code in `/dist`. A JPL archive will also be created at the root, which can use to distribute the plugin.
+#### RoadMap:
+ - Share a note with specified name _([PR](https://github.com/hackmdio/api-client/pull/14) to SDK already raised)_
+ - Share with pictures
+ - Bulk share
+ - Continuous syncing  _(one-way periodical sync Joplin :arrow_right: HackMD)_
 
-To build the plugin, simply run `npm run dist`.
+## Installation
 
-The project is setup to use TypeScript, although you can change the configuration to use plain JavaScript.
+- Download the latest released JPL package (`*.jpl`) from [here](https://github.com/xardbaiz/joplin-plugin-hackmd/releases/)
+- Open Joplin and navigate to `Tools > Options > Plugins`
+- Press `Install plugin` and select the previously downloaded `jpl` file
+- Confirm selection
+- Restart Joplin to enable the plugin
+- By default the panel will appear on the right side of the screen, see how to [place the panel](#place-the-panel)
 
-## Updating the plugin framework
+### Uninstall
 
-To update the plugin framework, run `npm run update`.
+- Open Joplin and navigate to `Tools > Options > Plugins`
+- Search for the plugin name and press `Delete` to remove the plugin completely
+  - Alternatively you can also disable the plugin by clicking on the toggle button
+- Restart Joplin
 
-In general this command tries to do the right thing - in particular it's going to merge the changes in package.json and .gitignore instead of overwriting. It will also leave "/src" as well as README.md untouched.
+## Usage
 
-The file that may cause problem is "webpack.config.js" because it's going to be overwritten. For that reason, if you want to change it, consider creating a separate JavaScript file and include it in webpack.config.js. That way, when you update, you only have to restore the line that include your file.
+### Register on [HackMD.io](https://hackmd.io)
+
+Register with email and password _(it's free ;) )_
+
+### Fill HackMD plugin settings
+Open `Tools > Options > HackMD sync` and fill username & password fields
+
+![HackMD sync settings|571x227, 75%](docs/HackMD_sync_settings.png)
+
+
+### Share
+Select target note and press the `Share on HackMD` button
+
+![Share button|671x65, 75%](docs/Share_button.png)
+
+Wait. If everything is ok - note body will contain link to note on HackMD
+
+![Result with HackMD link|566x65, 75%](docs/Result_with_HackMD_link.png)
+
+## Support
+
+**Best support is contribution** \
+You like this plugin as much as I do and it improves your daily work with Joplin?
+Then I would be very happy if you buy me a :coffee: via [YuMoney](https://yoomoney.ru/to/410012161278626) :wink:
+
+## Contributing
+
+Contributions to this plugin are most welcome. Feel free to open a pull request or an issue.
+Make sure to use conventional [commit messages](https://github.com/pvdlg/conventional-commit-types) if you're creating a pull request.
+
+### Building the plugin
+
+If you want to build the plugin by your own simply run `npm run dist`.
+
+### Updating the plugin framework
+
+To update the plugin framework, run `npm run update`. 
