@@ -24,7 +24,6 @@ It allows sharing notes online on the HackMD website
 - Press `Install plugin` and select the previously downloaded `jpl` file
 - Confirm selection
 - Restart Joplin to enable the plugin
-- By default the panel will appear on the right side of the screen, see how to [place the panel](#place-the-panel)
 
 ### Uninstall
 
