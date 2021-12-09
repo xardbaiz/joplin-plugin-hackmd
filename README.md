@@ -57,7 +57,7 @@ Wait. If everything is ok - note body will contain link to note on HackMD
 
 **Best support is contribution** \
 You like this plugin as much as I do and it improves your daily work with Joplin?
-Then I would be very happy if you buy me a :coffee: via [YuMoney](https://yoomoney.ru/to/410012161278626) :wink:
+Then I would be very happy if you buy me a :coffee: via [PayPal](https://paypal.me/xardbaiz) :wink:
 
 ## Contributing
 
