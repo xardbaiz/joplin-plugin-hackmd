@@ -6,7 +6,7 @@
 	"name": "joplin-hackmd",
 	"description": "Quick share notes on HackMD",
 	"author": "xardbaiz",
-	"homepage_url": "",
-	"repository_url": "",
+	"homepage_url": "https://discourse.joplinapp.org/t/plugin-share-note-online-via-hackmd/22048",
+	"repository_url": "https://github.com/xardbaiz/joplin-plugin-hackmd",
 	"keywords": []
 }
