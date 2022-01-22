@@ -56,10 +56,28 @@ joplin.plugins.register({
 				}
 
 				console.debug("[HackMD] Creating note...");
-				let url = await hmdApiClient.newNote(note.body);
 
+				// Set note name (Title)
+				let remoteBody:string = note.body;
+				if (!remoteBody.trim().startsWith("# ")) {
+					remoteBody = `# ${note.title}\n${remoteBody}`;
+				}
+
+				// Set tags (if any)
+				let tags:Object = await joplin.data.get(['notes', note.id, 'tags']);
+				if (tags && tags['items'] && tags['items'].length > 0) {
+					let tagsText = "###### tags:";
+					tags['items'].forEach(tag => {
+						tagsText+=` \`${tag.title}\``;
+					});
+					remoteBody = remoteBody.replace(/^(#.*\n)/gm, `$1\n${tagsText}\n\n`);
+				}
+
+				// Uploading
+				let url = await hmdApiClient.newNote(remoteBody);
 				console.log("[HackMD] New note url:", url);
 
+				// Updating Joplin local note body
 				let newBody  = `${note.body} \n\n ----- \n ${hmdMarkPrefix}: ${url}`;
 				await joplin.data.put(['notes', note.id], null, { body: newBody});
 				await joplin.commands.execute('editor.setText', newBody);
