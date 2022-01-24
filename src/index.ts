@@ -2,13 +2,33 @@ import joplin from 'api';
 import { ToolbarButtonLocation } from 'api/types';
 import Settings from "./settings";
 
-import HmdAPI from '@hackmd/api' 
+import HmdAPI from '@hackmd/api'
+import ImgurClient from 'imgur';
+
 import loadedHmdConfig from "./hackmd/config";
 
 const hmdMarkPrefix = "HackMD Note URL";
 const shareButton = "share"
 
 let hmdApiClient:HmdAPI ;
+let imgurClient:ImgurClient;
+
+async function uploadResources(note) {
+	let resources = await joplin.data.get(['notes', note.id, 'resources']);
+	if (resources && resources['items'] && resources['items'].length > 0) {
+		var resourcesInfo: Object[] = await Promise.all(resources['items'].map(async (img): Promise<Object> => {
+			return {
+				id: img.id, 
+				file: await joplin.data.get(['resources', img.id, 'file'])
+			}
+		}));
+
+		if (!imgurClient) {
+			let imgurClientId = await Settings.getImgurClientId();
+			let imgurClient = new ImgurClient({ clientId: imgurClientId });
+		}
+	}
+}
 
 joplin.plugins.register({
 
@@ -56,6 +76,7 @@ joplin.plugins.register({
 				}
 
 				console.debug("[HackMD] Creating note...");
+				let imgUpload = uploadResources(note);
 
 				// Set note name (Title)
 				let remoteBody:string = note.body;
@@ -72,6 +93,8 @@ joplin.plugins.register({
 					});
 					remoteBody = remoteBody.replace(/^(#.*\n)/gm, `$1\n${tagsText}\n\n`);
 				}
+
+				// Replace resources in text
 
 				// Uploading
 				let url = await hmdApiClient.newNote(remoteBody);

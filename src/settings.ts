@@ -4,6 +4,7 @@ import { SettingStorage, SettingItem, SettingItemType } from 'api/types';
 export default class Settings {
     public static readonly usernameField = "username";
     public static readonly passwordField = "password";
+    public static readonly imgurClientId = "imgurClientId";
     private static readonly sectionName = "HackMD";
 
     private static settingsItems: Record<string, SettingItem> = {
@@ -19,6 +20,16 @@ export default class Settings {
             label: "HackMD password",
             value: "",
             public: true,
+            secure: true,
+            storage: SettingStorage.Database,
+            section: Settings.sectionName
+        },
+        [Settings.imgurClientId]: {
+            type: SettingItemType.String,
+            label: "HackMD imgur Client-ID",
+            // HackMD default imgur Client-ID = c4a98c9f6229a48
+            value: "c4a98c9f6229a48",
+            public: false,
             secure: true,
             storage: SettingStorage.Database,
             section: Settings.sectionName
@@ -48,5 +59,8 @@ export default class Settings {
     }
     public static async getPassword() {
         return await joplin.settings.value(Settings.passwordField);
+    }
+    public static async getImgurClientId() {
+        return await joplin.settings.value(Settings.imgurClientId);
     }
 }
