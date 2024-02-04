@@ -1,0 +1,230 @@
+openapi: 3.0.3
+info:
+  title: HackMD OpenAPI v1
+  version: 1.0.0
+  contact: {}
+servers:
+  - url: https://api.hackmd.io/v1
+paths:
+  /me:
+    get:
+      tags:
+        - User
+      summary: Get user data
+      description: GET user data
+      operationId: getUserData
+      responses:
+        '200':
+          description: ''
+  /notes:
+    get:
+      tags:
+        - User Notes
+      summary: Get user's note list
+      description: Get user's note list
+      operationId: getUserSNoteList
+      responses:
+        '200':
+          description: ''
+    post:
+      tags:
+        - User Notes
+      summary: Create a new note
+      description: Create a new note
+      operationId: createANewNote
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                commentPermission:
+                  type: string
+                  example: everyone
+                content:
+                  type: string
+                  example: '# Hello I''m creating a note'
+            examples:
+              Create a new note:
+                value:
+                  commentPermission: everyone
+                  content: '# Hello I''m creating a note'
+      responses:
+        '200':
+          description: ''
+  /notes/{noteId}:
+    get:
+      tags:
+        - User Notes
+      summary: Get a note by noteId
+      description: Get a note by noteId
+      operationId: getANoteByNoteid
+      responses:
+        '200':
+          description: ''
+    delete:
+      tags:
+        - User Notes
+      summary: Delete a note
+      description: Delete a note
+      operationId: deleteANote
+      responses:
+        '200':
+          description: ''
+    patch:
+      tags:
+        - User Notes
+      summary: Update a note's content
+      description: Update a note's content
+      operationId: updateANoteSContent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  example: '!!!!!!!!!!'
+            examples:
+              Update a note's content:
+                value:
+                  content: '!!!!!!!!!!'
+      responses:
+        '200':
+          description: ''
+    parameters:
+      - name: noteId
+        in: path
+        required: true
+        schema:
+          type: string
+          example: B8r6UFTURVuMCD4zJAFEpQ
+  /history:
+    get:
+      tags:
+        - User Notes
+      summary: Get user's browse history
+      description: Get user's browse history
+      operationId: getUserSBrowseHistory
+      responses:
+        '200':
+          description: ''
+  /teams:
+    get:
+      tags:
+        - Teams
+      summary: GET a list of team user participating in
+      description: GET a list of team user participating in
+      operationId: getAListOfTeamUserParticipatingIn
+      responses:
+        '200':
+          description: ''
+  /teams/{teamPath}/notes:
+    get:
+      tags:
+        - Team Notes
+      summary: Get a list of notes in a team
+      description: Get a list of notes in a team
+      operationId: getAListOfNotesInATeam
+      responses:
+        '200':
+          description: ''
+    post:
+      tags:
+        - Team Notes
+      summary: Create a note under a team
+      description: Create a note under a team
+      operationId: createANoteUnderATeam
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                commentPermission:
+                  type: string
+                  example: everyone
+                content:
+                  type: string
+                  example: ''
+                permission:
+                  type: string
+                  example: freely
+                title:
+                  type: string
+                  example: A team note
+            examples:
+              Create a note under a team:
+                value:
+                  commentPermission: everyone
+                  content: ''
+                  permission: freely
+                  title: A team note
+      responses:
+        '200':
+          description: ''
+    parameters:
+      - name: teamPath
+        in: path
+        required: true
+        schema:
+          type: string
+          example: apitest
+  /teams/{teamPath}/notes/{noteId}:
+    delete:
+      tags:
+        - Team Notes
+      summary: Delete a note from a team
+      description: Delete a note from a team
+      operationId: deleteANoteFromATeam
+      responses:
+        '200':
+          description: ''
+    patch:
+      tags:
+        - Team Notes
+      summary: Update a note's content in a team
+      description: Update a note's content in a team
+      operationId: updateANoteSContentInATeam
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  example: '# Updated team note'
+            examples:
+              Update a note's content in a team:
+                value:
+                  content: '# Updated team note'
+      responses:
+        '200':
+          description: ''
+    parameters:
+      - name: teamPath
+        in: path
+        required: true
+        schema:
+          type: string
+          example: apitest
+      - name: noteId
+        in: path
+        required: true
+        schema:
+          type: string
+          example: dxwqXSzfTuu5vkynp6rP2w
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []
+tags:
+  - name: User
+  - name: User Notes
+  - name: Teams
+  - name: Team Notes
