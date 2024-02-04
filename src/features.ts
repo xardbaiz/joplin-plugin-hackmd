@@ -2,6 +2,7 @@ import joplin from 'api';
 
 import * as hmdApi from '../hackmd-api/generated/api';
 import { CreateANewNoteRequest } from '../hackmd-api/generated/model/createANewNoteRequest';
+import { UpdateANoteSContentRequest } from '../hackmd-api/generated/model/updateANoteSContentRequest';
 
 import Settings from "./settings";
 import { JoplinNote, HackMdNote } from './types';
@@ -47,14 +48,29 @@ export async function shareNote(note: JoplinNote): Promise<string> {
 }
 
 async function uploadNote(remoteBody: string): Promise<HackMdNote> {
-    let userNotesApi = new hmdApi.UserNotesApi()
-    userNotesApi.accessToken = await getUserAccessToken()
-
     let createANewNoteRequest = new CreateANewNoteRequest()
     createANewNoteRequest.content = remoteBody
 
+    let userNotesApi = await getUserNotesClient()
     let response = await userNotesApi.createANewNote(createANewNoteRequest)
-    return response.body
+    let createdNote: HackMdNote = response.body
+    await updatePermissions(createdNote)
+
+    return createdNote
+}
+
+async function updatePermissions(hackMdNote: HackMdNote) {
+    let request: UpdateANoteSContentRequest = new UpdateANoteSContentRequest()
+    request.readPermission = "guest"
+
+    let userNotesApi = await getUserNotesClient()
+    await userNotesApi.updateANoteSContent(hackMdNote.id, request)
+}
+
+async function getUserNotesClient(): Promise<hmdApi.UserNotesApi> {
+    let userNotesApi = new hmdApi.UserNotesApi()
+    userNotesApi.accessToken = await getUserAccessToken()
+    return userNotesApi
 }
 
 async function getUserAccessToken(): Promise<string> {

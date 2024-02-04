@@ -85,7 +85,10 @@ paths:
               properties:
                 content:
                   type: string
-                  example: '!!!!!!!!!!'
+                  example: 'A content'
+                readPermission:
+                  type: string
+                  example: 'guest'
             examples:
               Update a note's content:
                 value:
