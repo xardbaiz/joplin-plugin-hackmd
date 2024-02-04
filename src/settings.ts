@@ -1,12 +1,21 @@
 import joplin from 'api';
-import { SettingStorage, SettingItem, SettingItemType } from 'api/types';
+import { SettingItem, SettingItemType, SettingStorage } from 'api/types';
 
 export default class Settings {
-    public static readonly usernameField = "username";
-    public static readonly passwordField = "password";
     private static readonly sectionName = "HackMD";
 
+    public static readonly userAccessTokenField = "accessToken";
+    public static readonly usernameField = "username";
+    public static readonly passwordField = "password";
+
     private static settingsItems: Record<string, SettingItem> = {
+        [Settings.userAccessTokenField]: {
+            type: SettingItemType.String,
+            label: "HackMD User Access Token",
+            value: "",
+            public: true,
+            section: Settings.sectionName
+        },
         [Settings.usernameField]: {
             type: SettingItemType.String,
             label: "HackMD email",
@@ -29,7 +38,7 @@ export default class Settings {
         await Settings.registerSection();
         Settings.registerSettings();
     }
-    
+
     private static async registerSection() {
         await joplin.settings.registerSection("HackMD", {
             label: "HackMD sync",
@@ -42,11 +51,7 @@ export default class Settings {
         await joplin.settings.registerSettings(Settings.settingsItems);
         console.debug("Settings registered");
     }
-
-    public static async getUsername () {
-        return await joplin.settings.value(Settings.usernameField);
-    }
-    public static async getPassword() {
-        return await joplin.settings.value(Settings.passwordField);
+    public static async getUserAccessToken() {
+        return await joplin.settings.value(Settings.userAccessTokenField);
     }
 }
