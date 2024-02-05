@@ -1,3 +1,9 @@
+# Generated
 dist/
 node_modules/
 publish/
+hackmd-api/generated
+
+# JEST reports
+coverage/
+test_results/

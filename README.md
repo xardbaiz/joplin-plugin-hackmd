@@ -8,9 +8,9 @@ It allows sharing notes online on the HackMD website
 - Uploads note online using HackMD website (one-way share: Joplin :arrow_right: HackMD)
 	>  - Content: {temporary} text only _(see 'Roardmap')_
 	>  - Access for a new note by default: read - everyone; write - owner only;
+- Content of already uploaded note could be updated by re-share
 
 #### RoadMap:
- - Share a note with specified name _([PR](https://github.com/hackmdio/api-client/pull/14) to SDK already raised)_
  - Share with pictures
  - Bulk share
  - Continuous syncing  _(one-way periodical sync Joplin :arrow_right: HackMD)_
@@ -36,10 +36,10 @@ It allows sharing notes online on the HackMD website
 
 ## Usage
 ### Register on [HackMD.io](https://hackmd.io)
-Register with email and password _(it's free ;) )_
+Then create personal access token ([instruction](https://hackmd.io/@hackmd-api/developer-portal/https%3A%2F%2Fhackmd.io%2F%40hackmd-api%2Fhow-to-issue-an-api-token))
 
 ### Fill HackMD plugin settings
-Open `Tools > Options > HackMD sync` and fill username & password fields
+Open `Tools > Options > HackMD sync` and fill the `HackMD User Access Token` field
 
 ![HackMD sync settings|571x227, 75%](docs/HackMD_sync_settings.png)
 
@@ -56,7 +56,7 @@ Wait. If everything is ok - note body will contain link to note on HackMD
 ## Support
 **Best support is contribution** \
 You like this plugin as much as I do and it improves your daily work with Joplin?
-Then I would be very happy if you buy me a :coffee: via [PayPal](https://paypal.me/xardbaiz) :wink:
+Then I would be very happy if you buy me a :coffee: via [Revolut](https://revolut.me/xardbaiz) :wink:
 
 ## Contributing
 Contributions to this plugin are most welcome. Feel free to open a pull request or an issue.

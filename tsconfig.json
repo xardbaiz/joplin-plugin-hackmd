@@ -5,6 +5,8 @@
 		"target": "es2015",
 		"jsx": "react",
 		"allowJs": true,
-		"baseUrl": "."
+		"baseUrl": ".",
+		/* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports*/
+		"esModuleInterop": true
 	}
 }
