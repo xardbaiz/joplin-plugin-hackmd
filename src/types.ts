@@ -6,5 +6,6 @@ export interface JoplinNote {
 
 export interface HackMdNote {
     id: string,
-    publishLink: string
+    publishLink: string,
+    shortId: string,
 }
