@@ -14,7 +14,7 @@ export async function shareNote(note: JoplinNote): Promise<string> {
     let srcNoteBody = note.body
 
     if (srcNoteBody.includes(hmdMarkPrefix)) {
-        const hmdLinkRegex = /http[s]?:\/\/hackmd\.io\/@[^/]+\/([A-Za-z0-9]+)/is;
+        const hmdLinkRegex = /http[s]?:\/\/hackmd\.io\/@[^/]+\/([A-Za-z0-9]+)$/is;
         let url = hmdLinkRegex.exec(srcNoteBody)
 
         let shortExtId = url?.[1]
